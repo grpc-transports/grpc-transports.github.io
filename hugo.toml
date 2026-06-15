@@ -1,0 +1,23 @@
+baseURL = "https://grpc-transports.github.io/"
+title = "grpc-transports"
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+# Each repo card. "result" is the honest headline (what it does, with limits).
+# "kind" = the underlying carrier (wireguard vs ssh); every repo is a Go library.
+[[params.repos]]
+  name = "wireguard"
+  accel = "gRPC over a WireGuard overlay (net.Listener + grpc.DialOption)"
+  kind = "wireguard"
+  type = "lib"
+  arch = "userspace (wireguard-go + gVisor netstack) or kernel WireGuard"
+  result = "Tunnels gRPC between VMs over a WireGuard overlay regardless of host. Two backends ship side by side: a default userspace data path (wireguard-go + gVisor netstack, no privileges, any OS) and a Linux kernel-WireGuard backend (CAP_NET_ADMIN, line-rate) brought up via pure-Go netlink + wgctrl — no iproute2 or wireguard-tools in the rootfs."
+[[params.repos]]
+  name = "ssh"
+  accel = "gRPC over an SSH tunnel (net.Listener + grpc.DialOption)"
+  kind = "ssh"
+  type = "lib"
+  arch = "Ed25519 host keys + SSH agent forwarding"
+  result = "Wraps inbound SSH connections as gRPC-ready net.Conn for a standard grpc.Server, and dials gRPC channels over SSH from the client. Ed25519 host-key auto-generation and SSH agent forwarding for client auth. Suited to human-driven CLI clients where SSH's per-user key model fits."
