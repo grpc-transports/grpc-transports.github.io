@@ -6,7 +6,7 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
   unsafe = true
 
 # Each repo card. "result" is the honest headline (what it does, with limits).
-# "kind" = the underlying carrier (wireguard vs ssh); every repo is a Go library.
+# "kind" = the underlying carrier (wireguard / ssh / vsock); every repo is a Go library.
 [[params.repos]]
   name = "wireguard"
   accel = "gRPC over a WireGuard overlay (net.Listener + grpc.DialOption)"
@@ -21,3 +21,10 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
   type = "lib"
   arch = "Ed25519 host keys + SSH agent forwarding"
   result = "Wraps inbound SSH connections as gRPC-ready net.Conn for a standard grpc.Server, and dials gRPC channels over SSH from the client. Ed25519 host-key auto-generation and SSH agent forwarding for client auth. Suited to human-driven CLI clients where SSH's per-user key model fits."
+[[params.repos]]
+  name = "vsock"
+  accel = "gRPC over AF_VSOCK (net.Conn Dialer + net.Listener)"
+  kind = "vsock"
+  type = "lib"
+  arch = "Linux virtio-vsock (KVM/QEMU or Apple VZ); amd64 · arm64 · riscv64 · loong64 · ppc64le · s390x"
+  result = "Host↔guest gRPC over the AF_VSOCK address family, addressed by (context id, port) with no IP stack in the guest. Listen returns a net.Listener whose connections report the peer CID; Dialer.DialContext matches grpc.WithContextDialer. Dependency-free pure Go (CGO=0); the syscall layer is seamed for 100% coverage, error branches included, on all six 64-bit arches. Linux-only, with a portable non-Linux stub so cross-platform callers still build."
