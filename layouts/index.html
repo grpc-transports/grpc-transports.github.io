@@ -3,26 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ .Site.Title }} — custom gRPC transports over WireGuard, SSH and vsock</title>
-<meta name="description" content="Custom gRPC transports in pure Go: tunnel gRPC over a WireGuard overlay, an SSH connection, or the host↔guest AF_VSOCK address family. Each transport ships a net.Listener for grpc.Server and a client dialer — inter-VM, host↔guest, and human-driven RPC without a sidecar.">
+<title>{{ .Site.Title }} — custom gRPC transports over WireGuard, SSH, vsock and WebSocket</title>
+<meta name="description" content="Custom gRPC transports in pure Go: tunnel gRPC over a WireGuard overlay, an SSH connection, the host↔guest AF_VSOCK address family, or a WebSocket (full bidi gRPC in the browser via js/wasm). Each transport ships a net.Listener for grpc.Server and a client dialer — inter-VM, host↔guest, human-driven, and in-browser RPC without a sidecar.">
 <style>
   :root {
     --bg: #ffffff; --fg: #1b1f24; --muted: #57606a; --card: #f6f8fa;
     --border: #d0d7de; --accent: #0E7F6B; --accent-fg: #ffffff;
-    --wireguard: #0E7F6B; --ssh: #2BD4A8; --vsock: #7C3AED;
+    --wireguard: #0E7F6B; --ssh: #2BD4A8; --vsock: #7C3AED; --websocket: #2563EB;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
       --bg: #0d1117; --fg: #e6edf3; --muted: #9198a1; --card: #161b22;
       --border: #30363d; --accent: #2BD4A8; --accent-fg: #0d1117;
-      --wireguard: #2BD4A8; --ssh: #5fe6c3; --vsock: #C4B5FD;
+      --wireguard: #2BD4A8; --ssh: #5fe6c3; --vsock: #C4B5FD; --websocket: #93C5FD;
     }
   }
   /* Forced dark (manual toggle). */
   :root[data-theme="dark"] {
       --bg: #0d1117; --fg: #e6edf3; --muted: #9198a1; --card: #161b22;
       --border: #30363d; --accent: #2BD4A8; --accent-fg: #0d1117;
-      --wireguard: #2BD4A8; --ssh: #5fe6c3; --vsock: #C4B5FD;
+      --wireguard: #2BD4A8; --ssh: #5fe6c3; --vsock: #C4B5FD; --websocket: #93C5FD;
   }
   .theme-toggle {
     position: fixed; top: 14px; right: 14px; z-index: 10;
@@ -66,6 +66,7 @@
   .kind.wireguard { color: var(--wireguard); }
   .kind.ssh { color: var(--ssh); }
   .kind.vsock { color: var(--vsock); }
+  .kind.websocket { color: var(--websocket); }
   .card h3 .tags { display: inline-flex; gap: 6px; }
   .type { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); }
   .type.lib { color: var(--accent); border-color: var(--accent); }
@@ -85,8 +86,9 @@
     <img class="logo" src="/img/logo.svg" alt="grpc-transports logo" width="88" height="88">
     <h1>grpc-transports</h1>
     <p class="tagline">Custom <strong>gRPC transports</strong> in pure Go — tunnel gRPC over a
-      <code>WireGuard</code> overlay, an <code>SSH</code> connection, or the host↔guest
-      <code>AF_VSOCK</code> family. Each transport hands you a
+      <code>WireGuard</code> overlay, an <code>SSH</code> connection, the host↔guest
+      <code>AF_VSOCK</code> family, or a <code>WebSocket</code> (full bidi gRPC in the browser
+      via <code>js/wasm</code>). Each transport hands you a
       <code>net.Listener</code> for <code>grpc.Server</code> and a matching client dialer.</p>
     <div class="pills">
       <span class="pill">net.Listener + client dialer</span>
@@ -94,6 +96,7 @@
       <span class="pill">WireGuard overlay</span>
       <span class="pill">SSH tunnel</span>
       <span class="pill">AF_VSOCK host↔guest</span>
+      <span class="pill">WebSocket / wasm</span>
       <span class="pill">no sidecar proxy</span>
     </div>
     <div class="cta">
@@ -103,7 +106,7 @@
   </header>
 
   <main class="wrap">
-    <p class="lead">Three transports, one shape. Each repo is a Go library that adapts standard
+    <p class="lead">Four transports, one shape. Each repo is a Go library that adapts standard
       <code>google.golang.org/grpc</code> to a different carrier: the server exposes a
       <code>net.Listener</code> you pass straight to <code>grpc.Server.Serve</code>, and the client
       provides a dialer that routes every channel through the same tunnel. No
@@ -118,7 +121,10 @@
       reusing Ed25519 host keys and SSH agent forwarding for authentication.
       <a href="https://github.com/grpc-transports/vsock"><code>vsock</code></a> targets host↔guest RPC on
       one machine — the AF_VSOCK address family used by KVM/QEMU and Apple VZ, addressed by
-      (context id, port) with no IP stack in the guest.</p>
+      (context id, port) with no IP stack in the guest.
+      <a href="https://github.com/grpc-transports/websocket"><code>websocket</code></a> targets the
+      browser — the client compiles to <code>js/wasm</code> and speaks full gRPC, including
+      client-streaming and bidirectional streaming, over a WebSocket with no grpc-web sidecar.</p>
 
     <h2 class="section">Repositories</h2>
     <section class="grid">

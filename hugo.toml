@@ -28,3 +28,10 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
   type = "lib"
   arch = "Linux virtio-vsock (KVM/QEMU or Apple VZ); amd64 · arm64 · riscv64 · loong64 · ppc64le · s390x"
   result = "Host↔guest gRPC over the AF_VSOCK address family, addressed by (context id, port) with no IP stack in the guest. Listen returns a net.Listener whose connections report the peer CID; Dialer.DialContext matches grpc.WithContextDialer. Dependency-free pure Go (CGO=0); the syscall layer is seamed for 100% coverage, error branches included, on all six 64-bit arches. Linux-only, with a portable non-Linux stub so cross-platform callers still build."
+[[params.repos]]
+  name = "websocket"
+  accel = "gRPC over a WebSocket — the carrier that works inside the browser (net.Listener + grpc.DialOption)"
+  kind = "websocket"
+  type = "lib"
+  arch = "native (coder/websocket) + js/wasm (syscall/js, zero deps); amd64 · arm64 · riscv64 · loong64 · ppc64le · s390x"
+  result = "Tunnels gRPC over a WebSocket, so the same client compiles and runs under GOOS=js/GOARCH=wasm and speaks full gRPC in the browser — including client-streaming and bidirectional streaming — with no Envoy/grpc-web sidecar. grpc-go runs its HTTP/2 framing in userspace over a net.Conn wrapping the WebSocket; the server is a plain grpc.Server behind net.Listener. Two client backends behind one signature (coder/websocket native, syscall/js on wasm). 100% native coverage plus a Node-driven js/wasm end-to-end test."
