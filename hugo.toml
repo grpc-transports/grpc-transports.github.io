@@ -35,3 +35,10 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
   type = "lib"
   arch = "native (coder/websocket) + js/wasm (syscall/js, zero deps); amd64 · arm64 · riscv64 · loong64 · ppc64le · s390x"
   result = "Tunnels gRPC over a WebSocket, so the same client compiles and runs under GOOS=js/GOARCH=wasm and speaks full gRPC in the browser — including client-streaming and bidirectional streaming — with no Envoy/grpc-web sidecar. grpc-go runs its HTTP/2 framing in userspace over a net.Conn wrapping the WebSocket; the server is a plain grpc.Server behind net.Listener. Two client backends behind one signature (coder/websocket native, syscall/js on wasm). 100% native coverage plus a Node-driven js/wasm end-to-end test."
+[[params.repos]]
+  name = "webrtc"
+  accel = "gRPC between two peers that cannot reach each other (net.Listener + grpc.DialOption)"
+  kind = "webrtc"
+  type = "lib"
+  arch = "pion/webrtc; DTLS end to end, no relay and no sidecar"
+  result = "gRPC assumes one side can listen and the other can dial. Two peers behind household routers can do neither, and there is nothing in between that either controls. The server exposes a net.Listener over an RTCPeerConnection and the client a grpc.DialOption over a data channel; everything above stays ordinary gRPC. It deliberately does NOT do signalling: the two have to swap a session description first, and how — a mail, a chat window, a QR code, a rendezvous somebody already runs — is not a transport's business, and is usually already decided by whatever the peers are doing together."
