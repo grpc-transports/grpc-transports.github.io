@@ -37,3 +37,7 @@ Configure GitHub Pages on the repo with **Source = "GitHub Actions"**
 
 - [wireguard](https://github.com/grpc-transports/wireguard) — gRPC over a WireGuard overlay.
 - [ssh](https://github.com/grpc-transports/ssh) — gRPC over an SSH tunnel.
+- [vsock](https://github.com/grpc-transports/vsock) — gRPC over a host/guest vsock.
+- [websocket](https://github.com/grpc-transports/websocket) — gRPC over a WebSocket.
+- [webrtc](https://github.com/grpc-transports/webrtc) — gRPC over a WebRTC data channel.
+- [control](https://github.com/grpc-transports/control) — the admin plane: a 0600 unix socket, or TCP with mandatory mTLS.
