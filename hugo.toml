@@ -42,3 +42,10 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
   type = "lib"
   arch = "pion/webrtc; DTLS end to end, no relay and no sidecar"
   result = "gRPC assumes one side can listen and the other can dial. Two peers behind household routers can do neither, and there is nothing in between that either controls. The server exposes a net.Listener over an RTCPeerConnection and the client a grpc.DialOption over a data channel; everything above stays ordinary gRPC. It deliberately does NOT do signalling: the two have to swap a session description first, and how — a mail, a chat window, a QR code, a rendezvous somebody already runs — is not a transport's business, and is usually already decided by whatever the peers are doing together."
+[[params.repos]]
+  name = "control"
+  accel = "the admin plane, not a transport"
+  kind = "control"
+  type = "lib"
+  arch = "unix socket (0600) or TCP with mandatory mTLS"
+  result = "Where a daemon's own control surface listens, and who is allowed to call it. A unix socket created 0600 so the filesystem answers the question, or TCP that REQUIRES client certificates -- there is no third option, because an admin plane reachable without proof is the one listener nobody meant to open. The caller's identity reaches the handler, so a method can refuse by name rather than by trust in the listener."
