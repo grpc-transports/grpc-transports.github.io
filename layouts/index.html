@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{{/* Dark Reader repaints pages that already draw their own dark theme, as this one does: ask it to stand aside. */}}
+<meta name="darkreader-lock">
 <title>{{ .Site.Title }} — custom gRPC transports over WireGuard, SSH, vsock and WebSocket</title>
 <meta name="description" content="Custom gRPC transports in pure Go: tunnel gRPC over a WireGuard overlay, an SSH connection, the host↔guest AF_VSOCK address family, or a WebSocket (full bidi gRPC in the browser via js/wasm). Each transport ships a net.Listener for grpc.Server and a client dialer — inter-VM, host↔guest, human-driven, and in-browser RPC without a sidecar.">
 <style>
