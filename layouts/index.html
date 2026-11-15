@@ -46,15 +46,13 @@
   <div class="hero"><div class="wrap">
     <div>
       <h1 class="head">grpc-transports</h1>
-      <p class="sub">Custom <strong>gRPC transports</strong> in pure Go — tunnel gRPC over a
+      <p class="sub">Custom <strong>gRPC transports</strong> in {{ if partial "mantra-on.html" . }}Go{{ else }}pure Go{{ end }} — tunnel gRPC over a
       <code>WireGuard</code> overlay, an <code>SSH</code> connection, the host↔guest
       <code>AF_VSOCK</code> family, or a <code>WebSocket</code> (full bidi gRPC in the browser
       via <code>js/wasm</code>). Each transport hands you a
       <code>net.Listener</code> for <code>grpc.Server</code> and a matching client dialer.</p>
-      <div class="cta">
-        <a class="btn btn-primary" href="https://github.com/grpc-transports/wireguard">{{ partial "icons/github.html" . }}wireguard</a>
-        <a class="btn btn-ghost" href="https://github.com/grpc-transports">{{ partial "icons/github.html" . }}GitHub</a>
-      </div>
+      {{/* [[params.cta]] in hugo.toml: the kit renders the row */}}
+      {{ partial "cta.html" . }}
       <div class="trust"><span class="pill">net.Listener + client dialer</span>
       <span class="pill">inter-VM RPC</span>
       <span class="pill">WireGuard overlay</span>
